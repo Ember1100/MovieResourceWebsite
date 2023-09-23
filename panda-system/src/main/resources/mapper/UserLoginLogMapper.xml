@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.UserLoginLogMapper">
+  <resultMap id="BaseResultMap" type="com.panda.system.domin.UserLoginLog">
+    <id column="login_id" jdbcType="BIGINT" property="loginId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="payTimeStr" jdbcType="VARCHAR" property="payTimeStr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    login_id, user_id, login_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_login_log
+    where login_id = #{loginId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_login_log
+    where login_id = #{loginId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.panda.system.domin.UserLoginLog">
+    insert into user_login_log (login_id, user_id, login_time
+      )
+    values (#{loginId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{loginTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.panda.system.domin.UserLoginLog">
+    insert into user_login_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="loginId != null">
+        login_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="loginId != null">
+        #{loginId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.UserLoginLog">
+    update user_login_log
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where login_id = #{loginId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.UserLoginLog">
+    update user_login_log
+    set user_id = #{userId,jdbcType=BIGINT},
+      login_time = #{loginTime,jdbcType=TIMESTAMP}
+    where login_id = #{loginId,jdbcType=BIGINT}
+  </update>
+  <select id="getTotal" resultType="java.lang.Integer">
+    select count(1) as num from user_login_log
+  </select>
+
+  <select id="getTotalByDate" resultType="java.lang.Integer">
+    select count(1) as num from user_login_log where  login_time > #{startTime}
+  </select>
+
+  <select id="getAWeekTotal" resultMap="BaseResultMap">
+    select count(1) as num,DATE_FORMAT(login_time, '%Y-%m-%d') as payTimeStr from user_login_log where  login_time > #{startTime}
+    GROUP BY payTimeStr
+  </select>
+</mapper>

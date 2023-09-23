@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.CommentsReplyMapper">
+  <resultMap id="BaseResultMap" type="com.panda.system.domin.CommentsReply">
+    <id column="reply_id" jdbcType="BIGINT" property="replyId" />
+    <result column="comment_id" jdbcType="BIGINT" property="commentId" />
+    <result column="reply_from_id" jdbcType="BIGINT" property="replyFromId" />
+    <result column="reply_from_name" jdbcType="VARCHAR" property="replyFromName" />
+    <result column="reply_from_avatar" jdbcType="VARCHAR" property="replyFromAvatar" />
+    <result column="reply_to_id" jdbcType="BIGINT" property="replyToId" />
+    <result column="reply_to_name" jdbcType="VARCHAR" property="replyToName" />
+    <result column="reply_to_avatar" jdbcType="VARCHAR" property="replyToAvatar" />
+    <result column="reply_content" jdbcType="VARCHAR" property="replyContent" />
+    <result column="reply_create_time" jdbcType="TIMESTAMP" property="replyCreateTime" />
+    <result column="reply_update_time" jdbcType="TIMESTAMP" property="replyUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    reply_id, comment_id, reply_from_id, reply_from_name, reply_from_avatar, reply_to_id, 
+    reply_to_name, reply_to_avatar, reply_content, reply_create_time, reply_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comments_reply
+    where reply_id = #{replyId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from comments_reply
+    where reply_id = #{replyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.panda.system.domin.CommentsReply">
+    insert into comments_reply (reply_id, comment_id, reply_from_id, 
+      reply_from_name, reply_from_avatar, reply_to_id, 
+      reply_to_name, reply_to_avatar, reply_content, 
+      reply_create_time, reply_update_time)
+    values (#{replyId,jdbcType=BIGINT}, #{commentId,jdbcType=BIGINT}, #{replyFromId,jdbcType=BIGINT}, 
+      #{replyFromName,jdbcType=VARCHAR}, #{replyFromAvatar,jdbcType=VARCHAR}, #{replyToId,jdbcType=BIGINT}, 
+      #{replyToName,jdbcType=VARCHAR}, #{replyToAvatar,jdbcType=VARCHAR}, #{replyContent,jdbcType=VARCHAR}, 
+      #{replyCreateTime,jdbcType=TIMESTAMP}, #{replyUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.panda.system.domin.CommentsReply">
+    insert into comments_reply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="replyId != null">
+        reply_id,
+      </if>
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="replyFromId != null">
+        reply_from_id,
+      </if>
+      <if test="replyFromName != null">
+        reply_from_name,
+      </if>
+      <if test="replyFromAvatar != null">
+        reply_from_avatar,
+      </if>
+      <if test="replyToId != null">
+        reply_to_id,
+      </if>
+      <if test="replyToName != null">
+        reply_to_name,
+      </if>
+      <if test="replyToAvatar != null">
+        reply_to_avatar,
+      </if>
+      <if test="replyContent != null">
+        reply_content,
+      </if>
+      <if test="replyCreateTime != null">
+        reply_create_time,
+      </if>
+      <if test="replyUpdateTime != null">
+        reply_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="replyId != null">
+        #{replyId,jdbcType=BIGINT},
+      </if>
+      <if test="commentId != null">
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="replyFromId != null">
+        #{replyFromId,jdbcType=BIGINT},
+      </if>
+      <if test="replyFromName != null">
+        #{replyFromName,jdbcType=VARCHAR},
+      </if>
+      <if test="replyFromAvatar != null">
+        #{replyFromAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="replyToId != null">
+        #{replyToId,jdbcType=BIGINT},
+      </if>
+      <if test="replyToName != null">
+        #{replyToName,jdbcType=VARCHAR},
+      </if>
+      <if test="replyToAvatar != null">
+        #{replyToAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="replyContent != null">
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyCreateTime != null">
+        #{replyCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyUpdateTime != null">
+        #{replyUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.CommentsReply">
+    update comments_reply
+    <set>
+      <if test="commentId != null">
+        comment_id = #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="replyFromId != null">
+        reply_from_id = #{replyFromId,jdbcType=BIGINT},
+      </if>
+      <if test="replyFromName != null">
+        reply_from_name = #{replyFromName,jdbcType=VARCHAR},
+      </if>
+      <if test="replyFromAvatar != null">
+        reply_from_avatar = #{replyFromAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="replyToId != null">
+        reply_to_id = #{replyToId,jdbcType=BIGINT},
+      </if>
+      <if test="replyToName != null">
+        reply_to_name = #{replyToName,jdbcType=VARCHAR},
+      </if>
+      <if test="replyToAvatar != null">
+        reply_to_avatar = #{replyToAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="replyContent != null">
+        reply_content = #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyCreateTime != null">
+        reply_create_time = #{replyCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyUpdateTime != null">
+        reply_update_time = #{replyUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where reply_id = #{replyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.CommentsReply">
+    update comments_reply
+    set comment_id = #{commentId,jdbcType=BIGINT},
+      reply_from_id = #{replyFromId,jdbcType=BIGINT},
+      reply_from_name = #{replyFromName,jdbcType=VARCHAR},
+      reply_from_avatar = #{replyFromAvatar,jdbcType=VARCHAR},
+      reply_to_id = #{replyToId,jdbcType=BIGINT},
+      reply_to_name = #{replyToName,jdbcType=VARCHAR},
+      reply_to_avatar = #{replyToAvatar,jdbcType=VARCHAR},
+      reply_content = #{replyContent,jdbcType=VARCHAR},
+      reply_create_time = #{replyCreateTime,jdbcType=TIMESTAMP},
+      reply_update_time = #{replyUpdateTime,jdbcType=TIMESTAMP}
+    where reply_id = #{replyId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getNewReplyId" resultType="java.lang.Long">
+    select reply_id from comments_reply order by reply_id desc limit 0,1
+  </select>
+</mapper>

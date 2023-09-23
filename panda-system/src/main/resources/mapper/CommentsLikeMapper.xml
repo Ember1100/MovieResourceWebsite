@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.CommentsLikeMapper">
+    <resultMap id="BaseResultMap" type="com.panda.system.domin.CommentsLike">
+        <id column="like_id" jdbcType="BIGINT" property="likeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="owner_id" jdbcType="BIGINT" property="ownerId"/>
+        <result column="comment_id" jdbcType="BIGINT" property="commentId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        like_id, user_id, owner_id, comment_id, create_time, type, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comments_like
+        where like_id = #{likeId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from comments_like
+        where like_id = #{likeId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.panda.system.domin.CommentsLike">
+        insert into comments_like (like_id, user_id, owner_id,
+                                   comment_id, create_time, type,
+                                   update_time)
+        values (#{likeId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{ownerId,jdbcType=BIGINT},
+                #{commentId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER},
+                #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.panda.system.domin.CommentsLike">
+        insert into comments_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="likeId != null">
+                like_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="ownerId != null">
+                owner_id,
+            </if>
+            <if test="commentId != null">
+                comment_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="likeId != null">
+                #{likeId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ownerId != null">
+                #{ownerId,jdbcType=BIGINT},
+            </if>
+            <if test="commentId != null">
+                #{commentId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.CommentsLike">
+        update comments_like
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ownerId != null">
+                owner_id = #{ownerId,jdbcType=BIGINT},
+            </if>
+            <if test="commentId != null">
+                comment_id = #{commentId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where like_id = #{likeId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.CommentsLike">
+        update comments_like
+        set user_id     = #{userId,jdbcType=BIGINT},
+            owner_id    = #{ownerId,jdbcType=BIGINT},
+            comment_id  = #{commentId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            type        = #{type,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where like_id = #{likeId,jdbcType=BIGINT}
+    </update>
+    <select id="selectCommentId" resultType="long">
+        select comment_id
+        from comments_like
+        where user_id = #{userId,jdbcType=BIGINT}
+          and owner_id = #{ownerId,jdbcType=BIGINT}
+          and type = 0
+    </select>
+
+    <select id="selectCommentsLike" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>  from comments_like where user_id =
+        #{userId,jdbcType=BIGINT} AND comment_id = #{commentId,jdbcType=BIGINT}
+    </select>
+</mapper>

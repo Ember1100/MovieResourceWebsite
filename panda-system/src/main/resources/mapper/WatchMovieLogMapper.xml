@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.WatchMovieLogMapper">
+  <resultMap id="BaseResultMap" type="com.panda.system.domin.WatchMovieLog">
+    <id column="watch_id" jdbcType="BIGINT" property="watchId" />
+    <result column="movie_id" jdbcType="BIGINT" property="movieId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="watch_time" jdbcType="TIMESTAMP" property="watchTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    watch_id, movie_id, user_id, watch_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from watch_movie_log
+    where watch_id = #{watchId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from watch_movie_log
+    where watch_id = #{watchId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.panda.system.domin.WatchMovieLog">
+    insert into watch_movie_log (watch_id, movie_id, user_id, 
+      watch_time)
+    values (#{watchId,jdbcType=BIGINT}, #{movieId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{watchTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.panda.system.domin.WatchMovieLog">
+    insert into watch_movie_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="watchId != null">
+        watch_id,
+      </if>
+      <if test="movieId != null">
+        movie_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="watchTime != null">
+        watch_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="watchId != null">
+        #{watchId,jdbcType=BIGINT},
+      </if>
+      <if test="movieId != null">
+        #{movieId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="watchTime != null">
+        #{watchTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.WatchMovieLog">
+    update watch_movie_log
+    <set>
+      <if test="movieId != null">
+        movie_id = #{movieId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="watchTime != null">
+        watch_time = #{watchTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where watch_id = #{watchId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.WatchMovieLog">
+    update watch_movie_log
+    set movie_id = #{movieId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      watch_time = #{watchTime,jdbcType=TIMESTAMP}
+    where watch_id = #{watchId,jdbcType=BIGINT}
+  </update>
+</mapper>

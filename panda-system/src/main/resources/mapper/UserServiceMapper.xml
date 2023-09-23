@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.UserServiceMapper">
+    <resultMap id="BaseResultMap" type="com.panda.system.domin.UserService">
+        <id column="service_id" jdbcType="BIGINT" property="serviceId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="service_start_time" jdbcType="TIMESTAMP" property="serviceStartTime"/>
+        <result column="service_end_time" jdbcType="TIMESTAMP" property="serviceEndTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="day_remain" jdbcType="INTEGER" property="dayRemain"/>
+        <result column="subNum" jdbcType="INTEGER" property="subNum"/>
+        <result column="payTimeStr" jdbcType="VARCHAR" property="payTimeStr"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        service_id, user_id, service_start_time, service_end_time, status
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_service
+        where service_id = #{serviceId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from user_service
+        where service_id = #{serviceId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.panda.system.domin.UserService">
+        insert into user_service (service_id, user_id, service_start_time,
+                                  service_end_time, status)
+        values (#{serviceId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{serviceStartTime,jdbcType=TIMESTAMP},
+                #{serviceEndTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.panda.system.domin.UserService">
+        insert into user_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceId != null">
+                service_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time,
+            </if>
+            <if test="serviceEndTime != null">
+                service_end_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceId != null">
+                #{serviceId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceStartTime != null">
+                #{serviceStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceEndTime != null">
+                #{serviceEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.UserService">
+        update user_service
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time = #{serviceStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceEndTime != null">
+                service_end_time = #{serviceEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where service_id = #{serviceId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.UserService">
+        update user_service
+        set user_id            = #{userId,jdbcType=BIGINT},
+            service_start_time = #{serviceStartTime,jdbcType=TIMESTAMP},
+            service_end_time   = #{serviceEndTime,jdbcType=TIMESTAMP},
+            status             = #{status,jdbcType=INTEGER}
+        where service_id = #{serviceId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByUserId" parameterType="com.panda.system.domin.UserService">
+        update user_service  set  status = #{status,jdbcType=INTEGER} where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select service_id,
+               user_id,
+               service_start_time,
+               service_end_time,
+               `status`,
+               DATEDIFF(service_end_time, NOW()) as day_remain
+        from user_service
+        where user_id = #{userId,jdbcType=BIGINT}
+          and `status` > 0
+    </select>
+    <resultMap id="ResultMap" type="com.panda.system.domin.vo.UserServiceDetailVo">
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="service_end_time" jdbcType="TIMESTAMP" property="serviceEndTime"/>
+        <result column="surplus_day" jdbcType="INTEGER" property="surplusDay"/>
+    </resultMap>
+    <select id="getVipServiceDetail" parameterType="java.lang.Long" resultMap="ResultMap">
+        SELECT su.user_name, us.service_end_time, DATEDIFF(us.service_end_time, NOW()) AS surplus_day
+        FROM sys_user su
+                 left JOIN user_service us on su.user_id = us.user_id
+        WHERE su.user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="getVipUser"  resultMap="BaseResultMap">
+        SELECT  DATE_FORMAT(service_start_time, '%Y-%m-%d') as payTimeStr,DATEDIFF(service_end_time,service_start_time) AS subNum
+        FROM  user_service  GROUP BY service_id HAVING subNum >=0
+    </select>
+</mapper>

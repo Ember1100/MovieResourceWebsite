@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.MemberOrderMapper">
+  <resultMap id="BaseResultMap" type="com.panda.system.domin.MemberOrder">
+    <id column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="payment" jdbcType="DECIMAL" property="payment" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="sign" jdbcType="BIGINT" property="sign" />
+    <result column="payTimeStr" jdbcType="VARCHAR" property="payTimeStr" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, user_id, product_id, product_name, create_time, pay_type, payment, status,order_number
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member_order
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from member_order
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.panda.system.domin.MemberOrder">
+    insert into member_order (order_id, user_id, product_id, 
+      product_name, create_time, pay_type, 
+      payment, status,order_number,sign)
+    values (#{orderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{productId,jdbcType=INTEGER}, 
+      #{productName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{payType,jdbcType=VARCHAR}, 
+      #{payment,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}),#{orderNumber,jdbcType=VARCHAR},#{sign,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.panda.system.domin.MemberOrder">
+    insert into member_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="payment != null">
+        payment,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="sign != null">
+        sign,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null">
+        #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.MemberOrder">
+    update member_order
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null">
+        payment = #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null">
+        status = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.MemberOrder">
+    update member_order
+    set user_id = #{userId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_name = #{productName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      payment = #{payment,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      order_number = #{orderNumber,jdbcType=VARCHAR},
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <select id="getMemberOrder" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include> from member_order
+    where user_id = #{userId,jdbcType=BIGINT} order by create_time desc
+  </select>
+  <select id="getTotal" resultType="java.lang.Integer">
+    select count(1) as num from member_order
+  </select>
+  <select id="getTotalByDate" resultType="java.lang.Integer">
+    select count(1) as num from member_order where  create_time > #{startTime}
+  </select>
+  <select id="getTotalMoney" resultType="java.math.BigDecimal">
+    select SUM(payment) as money from member_order
+  </select>
+  <select id="getTotalMoneyByDate" resultType="java.math.BigDecimal" >
+    select SUM(payment) as money from member_order where  create_time > #{startTime}
+  </select>
+  <select id="getAWeekTotal" resultMap="BaseResultMap" >
+    select COUNT(1) as num ,DATE_FORMAT(create_time, '%Y-%m-%d') as payTimeStr
+    from member_order where  create_time > #{startTime} GROUP BY payTimeStr
+
+  </select>
+  <select id="getAWeekMoney" resultMap="BaseResultMap" >
+    select SUM(payment) as payment,DATE_FORMAT(create_time, '%Y-%m-%d') as payTimeStr
+    from member_order where  create_time > #{startTime} GROUP BY payTimeStr
+  </select>
+</mapper>

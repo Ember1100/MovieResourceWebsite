@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.panda.system.mapper.MovieLunbotuMapper">
+  <resultMap id="BaseResultMap" type="com.panda.system.domin.MovieLunbotu">
+    <id column="lunb_id" jdbcType="BIGINT" property="lunbId" />
+    <result column="movie_id" jdbcType="BIGINT" property="movieId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    lunb_id, movie_id, status, pic_url, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from movie_lunbotu
+    where lunb_id = #{lunbId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from movie_lunbotu
+    where lunb_id = #{lunbId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.panda.system.domin.MovieLunbotu">
+    insert into movie_lunbotu (lunb_id, movie_id, status, 
+      pic_url, create_time)
+    values (#{lunbId,jdbcType=BIGINT}, #{movieId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+      #{picUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.panda.system.domin.MovieLunbotu">
+    insert into movie_lunbotu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lunbId != null">
+        lunb_id,
+      </if>
+      <if test="movieId != null">
+        movie_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lunbId != null">
+        #{lunbId,jdbcType=BIGINT},
+      </if>
+      <if test="movieId != null">
+        #{movieId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.panda.system.domin.MovieLunbotu">
+    update movie_lunbotu
+    <set>
+      <if test="movieId != null">
+        movie_id = #{movieId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where lunb_id = #{lunbId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.panda.system.domin.MovieLunbotu">
+    update movie_lunbotu
+    set movie_id = #{movieId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where lunb_id = #{lunbId,jdbcType=BIGINT}
+  </update>
+  <select id="getLunbotu" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include> from movie_lunbotu where status = 1
+  </select>
+</mapper>
