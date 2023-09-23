@@ -62,7 +62,7 @@ pagehelper:
 minio:
   endpoint: http://120.77.42.122:9001
   accessKey: minio
-  secretKey: huangqi0720
+  secretKey: 
 
 
 
